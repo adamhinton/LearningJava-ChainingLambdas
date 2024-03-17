@@ -1,7 +1,9 @@
 package devlpa;
 
 import java.util.Arrays;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -40,6 +42,28 @@ public class Main {
                 .andThen(s -> String.join(", ", s))
                 .andThen(String::length);
         System.out.println(f2.apply(name));
+
+        String[] names = {"Ann", "Bob", "Carol"};
+        Consumer<String> s0 = s -> System.out.print(s.charAt(0));
+        Consumer<String> s1 = System.out::println;
+        Arrays.asList(names).forEach(
+                s0
+                        .andThen(s-> System.out.print(" - "))
+                        .andThen(s1));
+
+        Predicate<String> p1 = s -> s.equals("TIM");
+        Predicate<String> p2 = s -> s.equalsIgnoreCase("TIM");
+        Predicate<String> p3 = s -> s.startsWith("T");
+        Predicate<String> p4 = s -> s.startsWith("e");
+
+        Predicate<String> combined1 = p1.or(p2);
+        System.out.println("Combined1: " + combined1.test(name));
+
+        Predicate<String> combined2 = p3.and(p4);
+        System.out.println("Combined2:" + combined2.test(name));
+
+        Predicate<String> combined3 = p3.and(p4).negate();
+        System.out.println("Combined3:" + combined3.test(name));
 
 
     }
